@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist List</title>
+    <style>
+        /* 폰트 정의 */
+        @font-face {
+            font-family: 'Rota';
+            src: url('./font/Rota-ExtraBold.woff2') format('woff2'),
+                 url('./font/Rota-ExtraBold.woff') format('woff');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'Rota', 'Pretendard-Regular', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Navigation bar */
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        /* Page title */
+        .page-title {
+            text-align: center;
+            font-size: 48px;
+            margin: 20px 0;
+        }
+
+        /* Artist list */
+        .artist-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .artist-card {
+            background-color: white;
+            border: 2px solid #ccc;
+            border-radius: 50px;
+            padding: 20px 40px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 32px;
+            cursor: pointer;
+            transition: transform 0.3s, color 0.3s;
+        }
+
+        .artist-card:hover {
+            transform: scale(1.05);
+            color: var(--hover-color, black);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+            z-index: 2000;
+        }
+
+        .modal h2 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .modal hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 10px 0;
+        }
+
+        .modal small {
+            display: block;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .modal .basd-button {
+            display: inline-block;
+            background-color: #e0e0e0;
+            border-radius: 50px;
+            padding: 5px 15px;
+            margin: 5px 5px 5px 0;
+            font-size: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .modal .sns-button {
+            font-size: 12px;
+        }
+
+        .modal .sns-button a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .modal .close-button {
+            display: block;
+            margin: 10px auto 0;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        .modal .tags {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .artist-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px; /* 수평 간격은 유지 */
+            padding: 0; /* 상하 패딩 제거 */
+            margin: 0; /* 그룹 간 여백 제거 */
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>Artist List</h1>
+    </nav>
+
+    <div class="page-title">ARTIST</div>
+
+    <div class="artist-list">
+        <div class="artist-card" style="--hover-color: #ffb5b5;" data-artist="haru">Haru</div>
+        <div class="artist-card" style="--hover-color: #e63200;" data-artist="yjs">JISU</div>
+        <div class="artist-card" style="--hover-color: #8a4c00;" data-artist="cakey">Cakey</div>
+    </div><br>
+    <div class="artist-list">
+        <!-- Group 2 -->
+        <div class="artist-card" style="--hover-color: #21f0ff;" data-artist="urban">URBAN</div>
+        <div class="artist-card" style="--hover-color: #a3ffdd;" data-artist="celest">CELEST</div>
+        <div class="artist-card" style="--hover-color: #7000d1;" data-artist="bloom">Bloom1z</div>
+    </div><br>
+    <div class="artist-list">
+        <!-- Group 3 -->
+        <div class="artist-card" style="--hover-color: #ccff00;" data-artist="next">NEXT</div>
+        <div class="artist-card" style="--hover-color: #8fffe5;" data-artist="eclite">Eclite</div>
+    </div><br>
+    <div class="artist-list">
+        <!-- Group 1 -->
+        <div class="artist-card" style="--hover-color: #9ca1ff;" data-artist="fesant">Fesant</div>
+        <div class="artist-card" style="--hover-color: #e5c4f9;" data-artist="gaon">GAON</div>
+    </div><br>
+    <div class="artist-list">
+        <div class="artist-card" style="--hover-color: #ffa600;" data-artist="eightnight">8night</div>
+        <div class="artist-card" style="--hover-color: #ffd4f5;" data-artist="lucka">LUCKA</div>
+        <div class="artist-card" style="--hover-color: #7d7d7d;" data-artist="featherless">Featherless</div>
+    </div><br>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+    <div class="modal" id="artistModal">
+        <h2 id="artistName">Artist Name</h2>
+        <hr>
+        <small id="debutInfo">Debut: Date | Album Type [Album Name]</small>
+        <div id="snsSection">
+            <small>SNS</small>
+            <div id="snsList"></div>
+        </div>
+        <div id="membersSection">
+            <small>Members</small>
+            <div id="membersList"></div>
+        </div>
+        <div id="unitsSection">
+            <small>Units</small>
+            <div id="unitsList"></div>
+        </div>
+        <div class="tags" id="tags"></div>
+        <button class="close-button" id="closeModal">Close</button>
+    </div>
+
+    <script>
+        const artists = {
+            haru: {
+                name: "Haru",
+                debut: "2004.04.12. 1st Album [사랑을 말하다]",
+                members: [],
+                units: [],
+                sns: [{ name: "Twitter", link: "https://twitter.com/kangta" },
+                { name: "Instagram", link: "https://instagram.com/kangta" }],
+                tags: ["#MUSICIAN"]
+            },
+            yjs: {
+                name: "Jisu",
+                debut: "2005.09.10. 1st Album [:I]",
+                members: [],
+                units: [],
+                sns: [{ name: "Twitter", link: "https://twitter.com/kangta" },
+                { name: "Instagram", link: "https://instagram.com/kangta" }],
+                tags: ["#MUSICIAN"]
+            },
+            cakey: {
+                name: "Cakey",
+                debut: "2006.02.10. Single [Hug Me]",
+                members: ["MINSEOK","SEONGJUN", "JIHOON"],
+                units: [],
+                sns: [{ name: "Twitter", link: "https://twitter.com/kangta" },
+                { name: "Instagram", link: "https://instagram.com/kangta" }],
+                tags: ["#MUSICIAN"]
+            },
+            urban: {
+                name: "URBAN",
+                debut: "2008.09.18. 1st Album [URBAN WAVE]",
+                members: ["HYUNWOO", "JINWOOK", "YUJIN"],
+                units: [],
+                sns: [{ name: "Twitter", link: "https://twitter.com/kangta" },
+                { name: "Instagram", link: "https://instagram.com/kangta" }],
+                tags: ["#MUSICIAN"]
+            },
+            celest: {
+                name: "celest",
+                debut: "2011.01.11. Single [11:11]",
+                members: ["SUBIN","YERIN","JIA","LUI","SOYU","YURI","MINJI","YEJIN","DAYOUNG","Namin"],
+                units: ["TELLO", "루시아"],
+                sns: [{ name: "Twitter", link: "https://twitter.com/kangta" },
+                { name: "Instagram", link: "https://instagram.com/kangta" }],
+                tags: ["#MUSICIAN"]
+            },
+            bloom: {
+                name: "Bloom1z",
+                debut: "2014.08.05. Single [Take It]",
+                members: ["Jihyeon", "Jieun", "Hyeonji", "Eunji", "Yeji"],
+                units: [],
+                sns: [{ name: "Twitter", link: "https://twitter.com/kangta" },
+                { name: "Instagram", link: "https://instagram.com/kangta" }],
+                tags: ["#MUSICIAN"]
+            },
+            next: {
+                name: "NEXT",
+                debut: "2015.05.15. 1st Mini Album [BREAK: First Step]",
+                members: ["JUNHYEOK","DOHYUN","JINWOO","KYUNGMIN","SEUNGHOON","SANGWOO","MINJAE","JINHO","MINGYU","SUMIN","TAEHYUN","TAEHUN","HINATA","SUHYUN","SEONGJUN","SOUTA","ITSUKI","ARATA","BAIHAN","CHEN","LIAM","LOGAN","ARTHUR"],
+                units: ["NEXT CHAMP","NEXT GEN","NEXT CRUSH","NEXT WISH"],
+                sns: [{ name: "Twitter", link: "https://twitter.com/kangta" },
+                { name: "Instagram", link: "https://instagram.com/kangta" }],
+                tags: ["#MUSICIAN"]
+            },
+            eclite: {
+                name: "Eclite",
+                debut: "2015.07.18. 1st Album [Pastie]",
+                members: ["A-RIN","SEOYOON","YERIN","DAHYE","NARAE", "SOO-A"],
+                units: [],
+                sns: [{ name: "Twitter", link: "https://twitter.com/kangta" },
+                { name: "Instagram", link: "https://instagram.com/kangta" }],
+                tags: ["#MUSICIAN"]
+            },
+            fesant: {
+                name: "Fesant",
+                debut: "2016.03.16. 1st Mini Album [LOVIA]",
+                members: ["SUYEONG","JUYEONG","MITSUKO","SATSUKI","YERIN","YUMI"],
+                units: [],
+                sns: [{ name: "Twitter", link: "https://twitter.com/kangta" },
+                { name: "Instagram", link: "https://instagram.com/kangta" }],
+                tags: ["#MUSICIAN"]
+            },
+            gaon: {
+                name: "GAON",
+                debut: "2016.12.14 1st Mini [MY WORLD]",
+                members: ["GARAM", "ON-U"],
+                units: [],
+                sns: [{ name: "YouTube", link: "https://youtube.com/boa" }, 
+                { name: "Twitter", link: "https://twitter.com/boa" }],
+                tags: ["#MUSICIAN", "#ACTOR"]
+            },
+            eightnight: {
+                name: "8night",
+                debut: "2018.11.21. 1st Mini [ALL NIGHT]",
+                members: ["GARAM", "SUBIN", "HARIN", "JIYU", "YUJIN", "MIRAE", "SEOYEON", "CHAERIN"],
+                units: ["Club's night"],
+                sns: [{ name: "Facebook", link: "https://facebook.com/tvxq" },
+                { name: "Instagram", link: "https://instagram.com/tvxq" }],
+                tags: ["#MUSICIAN"]
+            },
+            lucka: {
+                name: "LUCKA",
+                debut: "2020.07.16. 1st Mini [I'm LUCKY FRESH☆]",
+                members: ["GARAM", "SUBIN", "HARIN", "JIYU", "YUJIN"],
+                units: [],
+                sns: [{ name: "Facebook", link: "https://facebook.com/tvxq" },
+                { name: "Instagram", link: "https://instagram.com/tvxq" }],
+                tags: ["#MUSICIAN"]
+            },
+            featherless: {
+                name: "Featherless",
+                debut: "2024.08.08. Single [Turn This Game!]",
+                members: ["SOO-AH", "KYURI", "KARIN", "MIYU",  "SENKA"],
+                units: [],
+                sns: [{ name: "Facebook", link: "https://facebook.com/tvxq" },
+                { name: "Instagram", link: "https://instagram.com/tvxq" }],
+                tags: ["#MUSICIAN"]
+            },
+            
+        };
+
+        const artistCards = document.querySelectorAll(".artist-card");
+        const modal = document.getElementById("artistModal");
+        const overlay = document.getElementById("overlay");
+        const closeModal = document.getElementById("closeModal");
+        const membersSection = document.getElementById("membersSection");
+        const unitsSection = document.getElementById("unitsSection");
+        const membersList = document.getElementById("membersList");
+        const unitsList = document.getElementById("unitsList");
+        const snsList = document.getElementById("snsList");
+        const tags = document.getElementById("tags");
+
+        artistCards.forEach(card => {
+            card.addEventListener("click", () => {
+                const artistKey = card.dataset.artist;
+                const artist = artists[artistKey];
+
+                if (artist) {
+                    document.getElementById("artistName").textContent = artist.name;
+                    document.getElementById("debutInfo").textContent = `Debut: ${artist.debut}`;
+
+                    // Update SNS
+                    snsList.innerHTML = artist.sns.map(sns => `<div class='basd-button sns-button'><a href='${sns.link}' target='_blank'>${sns.name}</a></div>`).join("");
+
+                    // Update members
+                    if (artist.members.length > 0) {
+                        membersSection.style.display = "block";
+                        membersList.innerHTML = artist.members.map(member => `<div class='basd-button'>${member}</div>`).join("");
+                    } else {
+                        membersSection.style.display = "none";
+                    }
+
+                    // Update units
+                    if (artist.units.length > 0) {
+                        unitsSection.style.display = "block";
+                        unitsList.innerHTML = artist.units.map(unit => `<div class='basd-button'>${unit}</div>`).join("");
+                    } else {
+                        unitsSection.style.display = "none";
+                    }
+
+                    // Update tags
+                    tags.textContent = artist.tags.join(" ");
+
+                    modal.style.display = "block";
+                    overlay.style.display = "block";
+                }
+            });
+        });
+
+        closeModal.addEventListener("click", () => {
+            modal.style.display = "none";
+            overlay.style.display = "none";
+        });
+    </script>
+</body>
+</html>
